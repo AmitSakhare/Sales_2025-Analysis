@@ -97,3 +97,16 @@ SELECT to_char(INVOICEDATE, 'month') AS SALE_MONTH, partycity, ROUND(SUM(TOTWEIG
 FROM SALES_DB
 GROUP BY SALE_MONTH, partycity ORDER BY SALE_MONTH, TOTAL_SALES_AMOUNT DESC;
 
+-- Q.14 Write a query to find the 2nd highest Sales Amount of the Party
+SELECT DISTINCT ptyname,ROUND(SUM(TOTWEIGHT * RATE)) AS TOTAL_SALES_AMOUNT
+FROM SALES_DB
+GROUP BY ptyname ORDER BY TOTAL_SALES_AMOUNT DESC OFFSET 1 ROWS FETCH NEXT 1 ROWS ONLY;
+
+-- Q.14 Write a query to find the 2nd highest Sales Amount of the Local Party not export
+SELECT DISTINCT ptyname,ROUND(SUM(TOTWEIGHT * RATE)) AS TOTAL_SALES_AMOUNT
+FROM SALES_DB WHERE sites='Local'
+GROUP BY ptyname ORDER BY TOTAL_SALES_AMOUNT DESC OFFSET 1 ROWS FETCH NEXT 1 ROWS ONLY;
+-- Q.15 Write a SQL query to calculate total sales amount month, party and city wise
+SELECT to_char(INVOICEDATE, 'month') AS SALE_MONTH, ptyname, partycity, ROUND(SUM(TOTWEIGHT * RATE)) AS TOTAL_SALES_AMOUNT
+FROM SALES_DB  
+GROUP BY SALE_MONTH, ptyname, partycity ORDER BY SALE_MONTH, TOTAL_SALES_AMOUNT DESC;
