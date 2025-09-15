@@ -110,3 +110,35 @@ GROUP BY ptyname ORDER BY TOTAL_SALES_AMOUNT DESC OFFSET 1 ROWS FETCH NEXT 1 ROW
 SELECT to_char(INVOICEDATE, 'month') AS SALE_MONTH, ptyname, partycity, ROUND(SUM(TOTWEIGHT * RATE)) AS TOTAL_SALES_AMOUNT
 FROM SALES_DB  
 GROUP BY SALE_MONTH, ptyname, partycity ORDER BY SALE_MONTH, TOTAL_SALES_AMOUNT DESC;
+
+SELECT * FROM item;
+
+--Q.16 Write a SQL query to find the invoice against item name and bf and gsm with party name
+SELECT s.invoiceno, s.ptyname,i.itemname, i.bf, i.gsm
+FROM item i
+JOIN sales_db s ON i.invoice_id = s.invoice_id;
+
+--Q.17 Write a SQL query to find the total sales amount of each item
+SELECT i.itemname,round(sum(s.totweight * s.rate)) as sale_amount
+from item i
+join sales_db s on i.invoice_id = s.invoice_id
+group by i.itemname
+order by sale_amount desc;
+--Q.18 Write a SQL query to find the total sales amount of each item month wise
+SELECT to_char(s.invoicedate, 'month') AS sale_month, i.itemname,round(sum(s.totweight * s.rate)) as sale_amount
+from item i
+join sales_db s on i.invoice_id = s.invoice_id
+group by sale_month, i.itemname
+order by sale_month, sale_amount desc;
+--Q.19 Write a SQL query to find the total sales amount of each item party wise
+SELECT s.ptyname, i.itemname,round(sum(s.totweight * s.rate)) as sale_amount
+from item i
+join sales_db s on i.invoice_id = s.invoice_id
+group by s.ptyname, i.itemname
+order by sale_amount desc;
+--Q.20 Write a SQL query to find the total sales amount of each item city wise
+SELECT s.partycity, i.itemname,round(sum(s.totweight * s.rate)) as sale_amount
+from item i
+join sales_db s on i.invoice_id = s.invoice_id
+group by s.partycity, i.itemname
+order by sale_amount desc;
